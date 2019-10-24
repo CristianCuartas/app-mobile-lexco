@@ -81,7 +81,7 @@ export default ({ navigation }) => {
         <Button
           style={styles.buttonBack}
           title="Volver"
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigation.navigate('CreateNewAnnotation')}
         />
       </View>
     </View>

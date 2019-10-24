@@ -1,0 +1,85 @@
+import React, { Component, useEffect, useState } from 'react';
+import { StyleSheet, Text, TextInput, View, Button, Image } from 'react-native';
+import { Container, Header, Content, Form, Item, Input } from 'native-base';
+
+const users = [
+  { nombre: 'DANIELA QUINTERO SALCEDO', value: 1 },
+  { nombre: 'ANGELA RUEDA', value: 2 },
+  { nombre: 'SOL RINCON', value: 3 },
+  { nombre: 'CARLOS GONZALEZ MOYA', value: 4 },
+  { nombre: 'HERNANDO CADENA B', value: 5 },
+  { nombre: 'LUZ STELLA CABRERA T', value: 6 },
+  { nombre: 'LUIS ALIRIO HERNANDEZ', value: 7 },
+  { nombre: 'LEYDI HERRERA M', value: 8 },
+  { nombre: 'LUZ ELENA QUINTERO', value: 9 },
+  { nombre: 'LINA VEGA DELGADO', value: 10 },
+  { nombre: 'OSCAR POVEDA TRUJILLO', value: 11 },
+  { nombre: 'TATIANA CORTES ACOSTA', value: 12 },
+  { nombre: 'CRISTIAN DAVID CUARTAS', value: 13 }
+];
+
+export default ({ navigation }) => {
+  const [resultSearch, setResultSearch] = useState([{}]);
+  const [textValue, setTextValue] = useState('');
+  const [Value, setValue] = useState('');
+
+  const onTextChange = () => {
+    const value = Value;
+    let busqueda = [];
+    if (value.length > 0) {
+      const regex = new RegExp(`^${value}`, 'i');
+      busqueda = users.filter(v => regex.test(v.label));
+    }
+    setResultSearch(busqueda);
+    setTextValue(value);
+  };
+
+  const selectUser = value => {
+    setTextValue(value);
+    setResultSearch([{}]);
+  };
+
+  const renderBusqueda = () => {
+    if (resultSearch.length === 0) {
+      return null;
+    }
+    return (
+      <ul>
+        {resultSearch.map((user, idx) => (
+          <li
+            key={idx}
+            onClick={() => selectUser(user.label)}
+            style={{ cursor: 'pointer' }}
+          >
+            {user.label}
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
+  return (
+    <Container>
+      <Header />
+      <Content>
+        <Form>
+          <Text>Buscar usuario</Text>
+          <Item>
+            <Input
+              //   value={textValue}
+              type="text"
+              placeholder="Destinatario"
+              onChangeText={e => e.target.value}
+              //   onChangeText={() => onTextChange()}
+            />
+          </Item>
+          <Item last>
+            <Input placeholder="Password" />
+          </Item>
+        </Form>
+      </Content>
+    </Container>
+  );
+};
+
+const styles = StyleSheet.create({});

@@ -6,52 +6,26 @@ import { createStackNavigator } from 'react-navigation-stack';
 import Login from './Vistas/Login';
 import Profile from './Vistas/Profile';
 import WebView from './Vistas/WebView';
-// import PDF from './Vistas/PDFView';
-console.log(Ionicons);
-const Logo = () => <Text>Lalala</Text>;
+import Anotaciones from './Vistas/Anotaciones';
+import SearchUser from './Vistas/Anotaciones/SearchUser';
+import CreateNewAnnotation from './Vistas/Anotaciones/CreateNewAnnotation';
 
-// const DetalleScreen = ({ navigation }) => {
-//   const [cont, setCont] = useState(0);
-//   const incrementar = () => setCont(cont + 1);
-
-//   useEffect(() => {
-//     navigation.setParams({ incrementar });
-//   }, [cont]);
-
-//   const lala = navigation.getParam('lala', 'valor por defecto');
-//   return (
-//     <View style={styles.container}>
-//       <Text>Soy la pantalla de detalle {cont}</Text>
-//       <Button title="Volver" onPress={() => navigation.navigate('MiModal')} />
-//     </View>
-//   );
-// };
-
-// DetalleScreen.navigationOptions = ({ navigation }) => {
-//   return {
-//     title: navigation.getParam('title', 'Cargando...'),
-//     headerRight: (
-//       <Button
-//         onPress={navigation.getParam('incrementar')}
-//         title="Mas 1"
-//         color="#555"
-//       />
-//     )
-//   };
-// };
 const AppNavigator = createSwitchNavigator(
   {
     Login: {
       screen: Login
     },
+    SearchUser: {
+      screen: SearchUser
+    },
     Profile: {
       screen: Profile
     },
-    // PDF: {
-    //   screen: PDF
-    // },
     WebView: {
       screen: WebView
+    },
+    CreateNewAnnotation: {
+      screen: CreateNewAnnotation
     }
   },
   {
