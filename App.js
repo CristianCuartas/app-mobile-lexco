@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Ionicons } from '@expo/vector-icons';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text } from 'react-native';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Login from './Vistas/Login';
 import Profile from './Vistas/Profile';
 import WebView from './Vistas/WebView';
-import Anotaciones from './Vistas/Anotaciones';
 import SearchUser from './Vistas/Anotaciones/SearchUser';
 import CreateNewAnnotation from './Vistas/Anotaciones/CreateNewAnnotation';
 
@@ -29,7 +27,7 @@ const AppNavigator = createSwitchNavigator(
     }
   },
   {
-    initialRouteName: 'Login'
+    initialRouteName: 'CreateNewAnnotation'
   }
 );
 

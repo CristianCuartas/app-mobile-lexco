@@ -1,62 +1,81 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  Image
 } from 'react-native';
-import { Container, Header, Content, Form, Item, Input } from 'native-base';
+import { Container, Header, Content } from 'native-base';
 import SearchInput, { createFilter } from 'react-native-search-filter';
-const KEYS_TO_FILTERS = ['nombre', 'value'];
-const users = [
-  { nombre: 'DANIELA QUINTERO SALCEDO', value: 1 },
-  { nombre: 'ANGELA RUEDA', value: 2 },
-  { nombre: 'SOL RINCON', value: 3 },
-  { nombre: 'CARLOS GONZALEZ MOYA', value: 4 },
-  { nombre: 'HERNANDO CADENA B', value: 5 },
-  { nombre: 'LUZ STELLA CABRERA T', value: 6 },
-  { nombre: 'LUIS ALIRIO HERNANDEZ', value: 7 },
-  { nombre: 'LEYDI HERRERA M', value: 8 },
-  { nombre: 'LUZ ELENA QUINTERO', value: 9 },
-  { nombre: 'LINA VEGA DELGADO', value: 10 },
-  { nombre: 'OSCAR POVEDA TRUJILLO', value: 11 },
-  { nombre: 'TATIANA CORTES ACOSTA', value: 12 },
-  { nombre: 'CRISTIAN DAVID CUARTAS', value: 13 }
-];
+const KEYS_TO_FILTERS = ['nombre', 'login'];
 
 export default ({ navigation }) => {
+  const [usersApp, setUsersApp] = useState([]);
+  const getUsers = () => {
+    const token =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImF1eGFkbWlzaW9uZXMiLCJub21icmUiOiJEQU5JRUxBIFFVSU5URVJPIFNBTENFRE8iLCJlbWFpbCI6ImF1eGFkbWlzaW9uZXNAdW5pdi5jb20iLCJpYXQiOjE1NzIyNzE0MzB9.3jTz3_-B3qVc8TVqomxLPeBC_9pIx9p_H03dox3U3y8';
+    fetch(`http://192.168.10.180:3000/api/users/list?name=car`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+        'Accept-Language': 'es'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setUsersApp(data);
+      })
+      .catch(error => console.log(error));
+  };
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   const [resultSearch, setResultSearch] = useState('');
   const searchUpdated = term => {
     setResultSearch(term);
   };
-  const filterUsers = users.filter(createFilter(resultSearch, KEYS_TO_FILTERS));
-  console.log(filterUsers);
+  const filterUsers = usersApp.filter(
+    createFilter(resultSearch, KEYS_TO_FILTERS)
+  );
   return (
     <Container>
-      <Header />
+      <Header style={styles.headerStyle}></Header>
       <Content>
         <View style={styles.container}>
-          <SearchInput
-            onChangeText={term => {
-              searchUpdated(term);
-            }}
-            style={styles.searchInput}
-            placeholder="Type a user to search"
-          />
+          <View style={{ flex: 1, flexDirection: 'row' }}>
+            <Image
+              style={{
+                marginLeft: 15,
+                marginTop: 20,
+                marginRight: 10,
+                width: 20,
+                height: 20
+              }}
+              source={require('./../../assets/img/search.png')}
+            />
+            <SearchInput
+              onChangeText={term => {
+                searchUpdated(term);
+              }}
+              style={styles.searchInput}
+              placeholder={'Type a user to search'}
+            />
+          </View>
           <ScrollView>
             {filterUsers.map(user => {
-              console.log(user.value);
               return (
                 <TouchableOpacity
-                  //   onPress={() => alert(user.nombre)}
                   onPress={() => {
                     navigation.navigate('CreateNewAnnotation', {
-                      UserID: user.value,
+                      UserLogin: user.login,
                       UserName: user.nombre
                     });
                   }}
-                  key={user.value}
+                  key={user.login}
                   style={styles.emailItem}
                 >
                   <View>
@@ -74,6 +93,12 @@ export default ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  buttonBack: {
+    width: 50
+  },
+  headerStyle: {
+    marginTop: 24
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -88,8 +113,11 @@ const styles = StyleSheet.create({
     color: 'rgba(0,0,0,0.5)'
   },
   searchInput: {
-    padding: 10,
+    width: 500,
+    padding: 15,
     borderColor: '#CCC',
-    borderWidth: 1
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'center'
   }
 });
