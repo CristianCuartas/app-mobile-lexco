@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -33,8 +33,13 @@ export default ({ navigation }) => {
   const [login, setLogin] = useState(userName);
   const [login_login, setlogin_login] = useState(UserLogin);
   const [send, setSend] = useState('');
+  /* clear inputSearch*/
   const [cleanInput, setcleanInput] = useState('');
-  const [clearInput, setclearInput] = useState(true);
+  const [clearInput, setclearInput] = useState(false);
+
+  useEffect(() => {
+    console.log('UserName = ' + userName);
+  }, []);
 
   const Toast = props => {
     if (props.visible) {
@@ -93,7 +98,8 @@ export default ({ navigation }) => {
               login: login,
               send: 'auxadmisiones'
             }}
-            onSubmit={(values, { setSubmitting }) => {
+            enableReinitialize={true}
+            onSubmit={(values, { setSubmitting, resetForm }) => {
               const token =
                 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbiI6ImF1eGFkbWlzaW9uZXMiLCJub21icmUiOiJEQU5JRUxBIFFVSU5URVJPIFNBTENFRE8iLCJlbWFpbCI6ImF1eGFkbWlzaW9uZXNAdW5pdi5jb20iLCJpYXQiOjE1NzIyNzE0MzB9.3jTz3_-B3qVc8TVqomxLPeBC_9pIx9p_H03dox3U3y8';
               setTimeout(() => {
@@ -112,14 +118,18 @@ export default ({ navigation }) => {
                 })
                   .then(response => {
                     if (response.status === 200) {
-                      setclearInput(!clearInput);
-                      textInput1.clear();
-                      textInput2.clear();
+                      // textInput1.current.clear();
+                      setLogin(undefined);
                       handleButtonPress();
                     }
                   })
                   .catch(error => console.log('', error));
                 setSubmitting(false);
+                resetForm({
+                  login: undefined
+                });
+                console.log('User: ' + login);
+                console.log('Description: ' + description);
               }, 500);
             }}
             validationSchema={Yup.object().shape({
@@ -143,10 +153,8 @@ export default ({ navigation }) => {
                 <CardItem>
                   <View style={{ flex: 1, flexDirection: 'row' }}>
                     <TextInput
+                      defaultValue={''}
                       value={values.login}
-                      ref={input => {
-                        textInput1 = input;
-                      }}
                       onChangeText={handleChange('login')}
                       onBlur={() => setFieldTouched('login')}
                       style={styles.inputDestinatario}
@@ -186,9 +194,7 @@ export default ({ navigation }) => {
                   >
                     <TextInput
                       value={values.description}
-                      ref={input => {
-                        textInput2 = input;
-                      }}
+                      // ref={textInput2}
                       onChangeText={handleChange('description')}
                       onBlur={() => setFieldTouched('description')}
                       style={styles.textarea}
