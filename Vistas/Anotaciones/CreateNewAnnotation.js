@@ -5,7 +5,8 @@ import {
   Image,
   Text,
   TextInput,
-  ToastAndroid
+  ToastAndroid,
+  AsyncStorage
 } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -20,7 +21,6 @@ import {
   Card,
   CardItem
 } from 'native-base';
-
 export default ({ navigation }) => {
   /* POST */
   const UserLogin = navigation.getParam('UserLogin');
@@ -39,6 +39,7 @@ export default ({ navigation }) => {
 
   useEffect(() => {
     console.log('UserName = ' + userName);
+    // storeData();
   }, []);
 
   const Toast = props => {
@@ -65,6 +66,27 @@ export default ({ navigation }) => {
   const hideToast = () => {
     setvisible(false);
   };
+
+  // ASYNC STORAGE
+
+  // const storeData = async () => {
+  //   try {
+  //     await AsyncStorage.setItem('@storage_Key', 'jwt');
+  //   } catch (e) {
+  //     console.log(`error ${e}`);
+  //   }
+  // };
+
+  // const getData = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('@storage_Key');
+  //     if (value !== null) {
+  //       console.log(value);
+  //     }
+  //   } catch (e) {
+  //     console.log(`error ${e}`);
+  //   }
+  // };
 
   return (
     <Container style={styles.container}>
@@ -229,6 +251,7 @@ export default ({ navigation }) => {
                     transparent
                     primary
                     onPress={handleSubmit}
+                    // onPress={getData}
                   >
                     <Image
                       style={{

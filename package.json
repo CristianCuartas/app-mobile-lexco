@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.6.2",
     "expo": "^35.0.0",
     "formik": "^2.0.1",
     "native-base": "^2.13.8",
